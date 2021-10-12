@@ -1,0 +1,3 @@
+[submodule "MysticEngine/vendor/spdlog"]
+	path = MysticEngine/vendor/spdlog
+	url = https://github.com/gabime/spdlog
