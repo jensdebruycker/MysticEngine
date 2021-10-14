@@ -2,8 +2,6 @@
 
 #include "Event.h"
 
-#include <sstream>
-
 namespace Mystic {
 
 	class MYSTIC_API MouseMovedEvent : public Event
@@ -62,6 +60,7 @@ namespace Mystic {
 
 	class MYSTIC_API MouseButtonPressedEvent : public MouseButtonEvent
 	{
+	public:
 		MouseButtonPressedEvent(int button) : MouseButtonEvent(button) {}
 
 		std::string ToString() const override
@@ -76,6 +75,7 @@ namespace Mystic {
 
 	class MYSTIC_API MouseButtonReleasedEvent : public MouseButtonEvent
 	{
+	public:
 		MouseButtonReleasedEvent(int button) : MouseButtonEvent(button) {}
 
 		std::string ToString() const override

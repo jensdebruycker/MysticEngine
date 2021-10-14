@@ -2,8 +2,6 @@
 
 #include "Event.h"
 
-#include <sstream>
-
 namespace Mystic {
 
 	class MYSTIC_API WindowResizeEvent : public Event

@@ -10,6 +10,12 @@ workspace "MysticEngine"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+-- Include directories relative to root folder (solution directory)
+IncludeDir = {}
+IncludeDir["GLFW"] = "MysticEngine/vendor/GLFW/include"
+
+include "MysticEngine/vendor/GLFW"
+
 project "MysticEngine"
 	location "MysticEngine"
 	kind "SharedLib"
@@ -17,6 +23,9 @@ project "MysticEngine"
 	
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+
+	pchheader "mspch.h"
+	pchsource "MysticEngine/src/mspch.cpp"
 
 	files
 	{
@@ -26,8 +35,15 @@ project "MysticEngine"
 
 	includedirs
 	{
-		"%{prj.name}/src"
-		"%{prj.name}/vendor/spdlog/include"
+		"%{prj.name}/src",
+		"%{prj.name}/vendor/spdlog/include",
+		"%{IncludeDir.GLFW}"
+	}
+
+	links
+	{
+		"GLFW",
+		"opengl32.lib"
 	}
 
 	filter "system:windows"
@@ -47,7 +63,11 @@ project "MysticEngine"
 		}
 
 	filter "configurations:Debug"
-		defines "MS_DEBUG"
+		defines
+		{
+			"MS_DEBUG",
+			"MS_ENABLE_ASSERTS"
+		}
 		symbols "On"
 
 	filter "configurations:Release"

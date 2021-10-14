@@ -1,9 +1,7 @@
 #pragma once
 
+#include "mspch.h"
 #include "Mystic/Core.h"
-
-#include <string>
-#include <functional>
 
 namespace Mystic {
 

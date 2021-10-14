@@ -2,8 +2,6 @@
 
 #include "Event.h"
 
-#include <sstream>
-
 namespace Mystic {
 
 	class MYSTIC_API KeyEvent : public Event
@@ -38,6 +36,7 @@ namespace Mystic {
 
 	class MYSTIC_API KeyReleasedEvent : public KeyEvent
 	{
+	public:
 		KeyReleasedEvent(int keycode) : KeyEvent(keycode) {}
 
 		std::string ToString() const override
