@@ -3,6 +3,7 @@
 // For use by Mystic applications
 
 #include "Mystic/Application.h"
+#include "Mystic/Layer.h"
 #include "Mystic/Log.h"
 
 // -----EntryPoint-------------------------

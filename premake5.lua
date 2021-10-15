@@ -68,14 +68,17 @@ project "MysticEngine"
 			"MS_DEBUG",
 			"MS_ENABLE_ASSERTS"
 		}
+		buildoptions "/MDd"
 		symbols "On"
 
 	filter "configurations:Release"
 		defines "MS_RELEASE"
+		buildoptions "/MD"
 		optimize "On"
 
 	filter "configurations:Dist"
 		defines "MS_DIST"
+		buildoptions "/MD"
 		symbols "On"
 
 project "Sandbox"
@@ -115,12 +118,15 @@ project "Sandbox"
 
 	filter "configurations:Debug"
 		defines "MS_DEBUG"
+		buildoptions "/MDd"
 		symbols "On"
 
 	filter "configurations:Release"
 		defines "MS_RELEASE"
+		buildoptions "/MD"
 		optimize "On"
 
 	filter "configurations:Dist"
 		defines "MS_DIST"
+		buildoptions "/MD"
 		symbols "On"
