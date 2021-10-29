@@ -1,6 +1,6 @@
 [submodule "MysticEngine/vendor/spdlog"]
 	path = MysticEngine/vendor/spdlog
 	url = https://github.com/gabime/spdlog
-[submodule "MysticEngine\\vendor\\GLFW"]
-	path = MysticEngine\\vendor\\GLFW
+[submodule "MysticEngine/vendor/GLFW"]
+	path = MysticEngine/vendor/GLFW
 	url = https://github.com/TheCherno/glfw
