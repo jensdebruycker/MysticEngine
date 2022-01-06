@@ -5,12 +5,17 @@
 
 #include "GLFW/glfw3.h"
 
+#include "Mystic/Input.h"
+
 namespace Mystic {
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
+	Application* Application::_instance = nullptr;
+
 	Application::Application()
 	{
+		_instance = this;
 		_window = std::unique_ptr<Window>(Window::Create());
 		_window->SetEventCallback(BIND_EVENT_FN(OnEvent));
 	}
@@ -52,8 +57,16 @@ namespace Mystic {
 			for (Layer* layer : _layerStack)
 				layer->OnUpdate();
 
+			//auto [x, y] = Input::GetMousePosition();
+			//MS_CORE_TRACE("{0}, {1}", x, y);
+
 			_window->OnUpdate();
 		}
+	}
+
+	Application& Application::Get()
+	{
+		return *_instance;
 	}
 
 	bool Application::OnWindowClose(WindowCloseEvent& e)

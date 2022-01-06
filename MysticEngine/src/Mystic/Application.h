@@ -22,12 +22,18 @@ namespace Mystic {
 
 		void PushLayer(Layer* layer);
 		void PushOverlay(Layer* overlay);
+
+		Window& GetWindow() { return *_window; };
+
+		static Application& Get();
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);
 
 		std::unique_ptr<Window> _window;
 		bool _running = true;
 		LayerStack _layerStack;
+
+		static Application* _instance;
 	};
 
 	//To be defined in client

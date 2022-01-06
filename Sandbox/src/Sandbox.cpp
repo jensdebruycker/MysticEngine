@@ -9,12 +9,15 @@ public:
 
 	void OnUpdate() override
 	{
-		MS_INFO("ExampleLayer::Update");
+		//MS_INFO("ExampleLayer::Update");
 	}
 
 	void OnEvent(Mystic::Event& event) override
 	{
 		MS_TRACE("{0}", event);
+
+		//if (Mystic::Input::IsKeyPressed(MS_KEY_TAB))
+		//	MS_INFO("Tab key is pressed!");
 	}
 };
 
