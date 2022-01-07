@@ -13,6 +13,7 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 -- Include directories relative to root folder (solution directory)
 IncludeDir = {}
 IncludeDir["GLFW"] = "MysticEngine/vendor/GLFW/include"
+IncludeDir["glm"] = "MysticEngine/vendor/glm"
 
 include "MysticEngine/vendor/GLFW"
 
@@ -30,14 +31,17 @@ project "MysticEngine"
 	files
 	{
 		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
+		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/vendor/glm/glm/**.hpp",
+		"%{prj.name}/vendor/glm/glm/**.inl"
 	}
 
 	includedirs
 	{
 		"%{prj.name}/src",
 		"%{prj.name}/vendor/spdlog/include",
-		"%{IncludeDir.GLFW}"
+		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.glm}"
 	}
 
 	links
@@ -98,6 +102,7 @@ project "Sandbox"
 	includedirs
 	{
 		"MysticEngine/vendor/spdlog/include",
+		"MysticEngine/vendor/glm",
 		"MysticEngine/src"
 	}
 
