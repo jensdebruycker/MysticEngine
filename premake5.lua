@@ -13,9 +13,11 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 -- Include directories relative to root folder (solution directory)
 IncludeDir = {}
 IncludeDir["GLFW"] = "MysticEngine/vendor/GLFW/include"
+IncludeDir["Glad"] = "MysticEngine/vendor/Glad/include"
 IncludeDir["glm"] = "MysticEngine/vendor/glm"
 
 include "MysticEngine/vendor/GLFW"
+include "MysticEngine/vendor/Glad"
 
 project "MysticEngine"
 	location "MysticEngine"
@@ -41,12 +43,14 @@ project "MysticEngine"
 		"%{prj.name}/src",
 		"%{prj.name}/vendor/spdlog/include",
 		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.Glad}",
 		"%{IncludeDir.glm}"
 	}
 
 	links
 	{
 		"GLFW",
+		"Glad",
 		"opengl32.lib"
 	}
 
@@ -58,7 +62,8 @@ project "MysticEngine"
 		defines
 		{
 			"MS_PLATFORM_WINDOWS",
-			"MS_BUILD_DLL"
+			"MS_BUILD_DLL",
+			"GLFW_INCLUDE_NONE"
 		}
 
 		postbuildcommands

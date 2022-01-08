@@ -5,6 +5,8 @@
 #include "Mystic/Events/MouseEvent.h"
 #include "Mystic/Events/KeyEvent.h"
 
+#include <glad/glad.h>
+
 namespace Mystic {
 
 	static bool _GLFWInitialized = false;
@@ -49,6 +51,8 @@ namespace Mystic {
 
 		_window = glfwCreateWindow((int)props.Width, (int)props.Height, _data.Title.c_str(), nullptr, nullptr);
 		glfwMakeContextCurrent(_window);
+		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+		MS_CORE_ASSERT(status, "Failed to initialize Glad!");
 		glfwSetWindowUserPointer(_window, &_data);
 		SetVSync(true);
 
