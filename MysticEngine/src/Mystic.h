@@ -6,6 +6,8 @@
 #include "Mystic/Layer.h"
 #include "Mystic/Log.h"
 
+#include "Mystic/ImGui/ImGuiLayer.h"
+
 #include "Mystic/Input.h"
 #include "Mystic/Keycodes.h"
 #include "Mystic/MouseButtonCodes.h"

@@ -7,3 +7,6 @@
 [submodule "MysticEngine/vendor/glm"]
 	path = MysticEngine/vendor/glm
 	url = https://github.com/g-truc/glm
+[submodule "MysticEngine/vendor/imgui"]
+	path = MysticEngine/vendor/imgui
+	url = https://github.com/TheCherno/imgui

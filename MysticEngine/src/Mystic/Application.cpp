@@ -15,7 +15,9 @@ namespace Mystic {
 
 	Application::Application()
 	{
+		MS_CORE_ASSERT(!_instance, "Application already exists");
 		_instance = this;
+
 		_window = std::unique_ptr<Window>(Window::Create());
 		_window->SetEventCallback(BIND_EVENT_FN(OnEvent));
 	}
@@ -27,11 +29,13 @@ namespace Mystic {
 	void Application::PushLayer(Layer* layer)
 	{
 		_layerStack.PushLayer(layer);
+		layer->OnAttach();
 	}
 
 	void Application::PushOverlay(Layer* overlay)
 	{
 		_layerStack.PushOverlay(overlay);
+		overlay->OnAttach();
 	}
 
 	void Application::OnEvent(Event& e)

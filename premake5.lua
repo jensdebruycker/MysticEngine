@@ -14,10 +14,12 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 IncludeDir = {}
 IncludeDir["GLFW"] = "MysticEngine/vendor/GLFW/include"
 IncludeDir["Glad"] = "MysticEngine/vendor/Glad/include"
+IncludeDir["ImGui"] = "MysticEngine/vendor/imgui"
 IncludeDir["glm"] = "MysticEngine/vendor/glm"
 
 include "MysticEngine/vendor/GLFW"
 include "MysticEngine/vendor/Glad"
+include "MysticEngine/vendor/imgui"
 
 project "MysticEngine"
 	location "MysticEngine"
@@ -44,6 +46,7 @@ project "MysticEngine"
 		"%{prj.name}/vendor/spdlog/include",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
+		"%{IncludeDir.ImGui}",
 		"%{IncludeDir.glm}"
 	}
 
@@ -51,6 +54,7 @@ project "MysticEngine"
 	{
 		"GLFW",
 		"Glad",
+		"ImGui",
 		"opengl32.lib"
 	}
 
