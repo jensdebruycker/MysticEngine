@@ -112,7 +112,8 @@ project "Sandbox"
 	{
 		"MysticEngine/vendor/spdlog/include",
 		"MysticEngine/vendor/glm",
-		"MysticEngine/src"
+		"MysticEngine/src",
+		"MysticEngine/vendor"
 	}
 
 	links 

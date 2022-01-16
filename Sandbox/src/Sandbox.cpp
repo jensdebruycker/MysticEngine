@@ -1,5 +1,7 @@
 #include <Mystic.h>
 
+#include "imgui/imgui.h"
+
 class ExampleLayer : public Mystic::Layer
 {
 public:
@@ -10,6 +12,13 @@ public:
 	void OnUpdate() override
 	{
 		//MS_INFO("ExampleLayer::Update");
+	}
+
+	void OnImGuiRender() override
+	{
+		//ImGui::Begin("Test");
+		//ImGui::Text("Hello World");
+		//ImGui::End();
 	}
 
 	void OnEvent(Mystic::Event& event) override
