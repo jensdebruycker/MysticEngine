@@ -7,6 +7,8 @@
 #include "Events/Event.h"
 #include "Mystic/Events/ApplicationEvent.h"
 
+#include "Mystic/ImGui/ImGuiLayer.h"
+
 
 namespace Mystic {
 
@@ -30,6 +32,7 @@ namespace Mystic {
 		bool OnWindowClose(WindowCloseEvent& e);
 
 		std::unique_ptr<Window> _window;
+		ImGuiLayer* _imGuiLayer;
 		bool _running = true;
 		LayerStack _layerStack;
 

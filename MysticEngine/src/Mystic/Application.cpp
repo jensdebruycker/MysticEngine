@@ -20,6 +20,9 @@ namespace Mystic {
 
 		_window = std::unique_ptr<Window>(Window::Create());
 		_window->SetEventCallback(BIND_EVENT_FN(OnEvent));
+
+		_imGuiLayer = new ImGuiLayer();
+		PushOverlay(_imGuiLayer);
 	}
 
 	Application::~Application() 
@@ -61,8 +64,10 @@ namespace Mystic {
 			for (Layer* layer : _layerStack)
 				layer->OnUpdate();
 
-			//auto [x, y] = Input::GetMousePosition();
-			//MS_CORE_TRACE("{0}, {1}", x, y);
+			_imGuiLayer->Begin();
+			for (Layer* layer : _layerStack)
+				layer->OnImGuiRender();
+			_imGuiLayer->End();
 
 			_window->OnUpdate();
 		}
