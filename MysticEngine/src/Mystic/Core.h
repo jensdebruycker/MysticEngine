@@ -1,10 +1,14 @@
 #pragma once
 
 #ifdef MS_PLATFORM_WINDOWS
-	#ifdef MS_BUILD_DLL
-		#define MYSTIC_API __declspec(dllexport)
+	#if MS_DYNAMIC_LINK
+		#ifdef MS_BUILD_DLL
+			#define MYSTIC_API __declspec(dllexport)
+		#else
+			#define MYSTIC_API __declspec(dllimport)
+		#endif
 	#else
-		#define MYSTIC_API __declspec(dllimport)
+		#define MYSTIC_API
 	#endif
 #else
 	#error MysticEngine only supports windows!
