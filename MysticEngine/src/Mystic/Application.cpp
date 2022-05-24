@@ -3,9 +3,9 @@
 
 #include "Mystic/Log.h"
 
-#include "glad/glad.h"
-
 #include "Mystic/Input.h"
+
+#include "glad/glad.h"
 
 namespace Mystic {
 
@@ -58,9 +58,6 @@ namespace Mystic {
 	{
 		while (_running)
 		{
-			glClearColor(1, 0, 1, 1);
-			glClear(GL_COLOR_BUFFER_BIT);
-
 			for (Layer* layer : _layerStack)
 				layer->OnUpdate();
 

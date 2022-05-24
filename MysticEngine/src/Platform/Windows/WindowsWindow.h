@@ -1,10 +1,9 @@
 #pragma once
 
 #include "Mystic/Window.h"
+#include "Mystic/Renderer/GraphicsContext.h"
 
 #include "GLFW/glfw3.h"
-
-#include "Mystic/Log.h"
 
 namespace Mystic {
 
@@ -30,6 +29,7 @@ namespace Mystic {
 		virtual void ShutDown();
 	private:
 		GLFWwindow* _window;
+		GraphicsContext* _context;
 
 		struct WindowData
 		{

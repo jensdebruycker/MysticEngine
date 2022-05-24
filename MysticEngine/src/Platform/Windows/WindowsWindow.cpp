@@ -5,7 +5,7 @@
 #include "Mystic/Events/MouseEvent.h"
 #include "Mystic/Events/KeyEvent.h"
 
-#include <glad/glad.h>
+#include "Platform/OpenGL/OpenGLContext.h"
 
 namespace Mystic {
 
@@ -38,7 +38,7 @@ namespace Mystic {
 		_data.Height = props.Height;
 
 		MS_CORE_INFO("Creating window {0} ({1}, {2})", props.Title, props.Width, props.Height);
-
+		
 		if (!_GLFWInitialized)
 		{
 			// TODO: glfwTerminate on system shutdown
@@ -50,9 +50,10 @@ namespace Mystic {
 		}
 
 		_window = glfwCreateWindow((int)props.Width, (int)props.Height, _data.Title.c_str(), nullptr, nullptr);
-		glfwMakeContextCurrent(_window);
-		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-		MS_CORE_ASSERT(status, "Failed to initialize Glad!");
+		
+		_context = new OpenGLContext(_window);
+		_context->Init();
+
 		glfwSetWindowUserPointer(_window, &_data);
 		SetVSync(true);
 
@@ -155,7 +156,7 @@ namespace Mystic {
 	void WindowsWindow::OnUpdate()
 	{
 		glfwPollEvents();
-		glfwSwapBuffers(_window);
+		_context->SwapBuffers();
 	}
 
 	void WindowsWindow::SetVSync(bool enabled)

@@ -9,7 +9,7 @@
 
 
 // TEMPORARY
-#include <GLFW/glfw3.h>
+//#include <GLFW/glfw3.h>
 //#include <glad/glad.h>
 
 namespace Mystic {
@@ -90,8 +90,6 @@ namespace Mystic {
 
 	void ImGuiLayer::OnImGuiRender()
 	{
-		static bool show = true;
-		ImGui::ShowDemoWindow(&show);
 	}
 
 }

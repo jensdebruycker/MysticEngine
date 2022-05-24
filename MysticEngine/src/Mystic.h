@@ -6,11 +6,18 @@
 #include "Mystic/Layer.h"
 #include "Mystic/Log.h"
 
-#include "Mystic/ImGui/ImGuiLayer.h"
-
 #include "Mystic/Input.h"
 #include "Mystic/Keycodes.h"
 #include "Mystic/MouseButtonCodes.h"
+
+#include "Mystic/ImGui/ImGuiLayer.h"
+
+// -----Renderer--------------------------
+#include "Mystic/Renderer/Renderer.h"
+
+#include "Mystic/Renderer/Buffer.h"
+#include "Mystic/Renderer/Shader.h"
+// ----------------------------------------
 
 // -----EntryPoint-------------------------
 #include "Mystic/EntryPoint.h"

@@ -9,6 +9,8 @@
 
 #include "Mystic/ImGui/ImGuiLayer.h"
 
+#include "Renderer/Shader.h"
+#include "Renderer/Buffer.h"
 
 namespace Mystic {
 

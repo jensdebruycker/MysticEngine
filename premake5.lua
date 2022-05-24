@@ -113,6 +113,7 @@ project "Sandbox"
 	includedirs
 	{
 		"MysticEngine/vendor/spdlog/include",
+		"MysticEngine/vendor/Glad/include",
 		"MysticEngine/vendor/glm",
 		"MysticEngine/src",
 		"MysticEngine/vendor"
