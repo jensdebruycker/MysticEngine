@@ -10,10 +10,14 @@ namespace Mystic {
 		OpenGLVertexBuffer(float* vertices, unsigned int size);
 		virtual ~OpenGLVertexBuffer();
 
-		virtual void Bind() const;
-		virtual void Unbind() const;
+		virtual void Bind() const override;
+		virtual void Unbind() const override;
+
+		virtual const BufferLayout& GetLayout() const override { return _layout; }
+		virtual void SetLayout(const BufferLayout& layout) override { _layout = layout; }
 	private:
 		unsigned int _rendererID;
+		BufferLayout _layout;
 	};
 
 	class OpenGLIndexBuffer : public IndexBuffer
