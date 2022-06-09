@@ -16,6 +16,7 @@
 #include "Mystic/Renderer/Renderer.h"
 
 #include "Mystic/Renderer/Buffer.h"
+#include "Mystic/Renderer/VertexArray.h"
 #include "Mystic/Renderer/Shader.h"
 // ----------------------------------------
 

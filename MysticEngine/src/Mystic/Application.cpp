@@ -1,12 +1,6 @@
 #include "mspch.h"
 #include "Application.h"
 
-#include "Mystic/Log.h"
-
-#include "Mystic/Input.h"
-
-#include "glad/glad.h"
-
 namespace Mystic {
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
