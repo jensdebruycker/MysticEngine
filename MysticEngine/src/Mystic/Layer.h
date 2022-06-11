@@ -3,6 +3,8 @@
 #include "Core.h"
 #include "Events/Event.h"
 
+#include "Mystic/Core/Timestep.h"
+
 namespace Mystic {
 
 	class MYSTIC_API Layer
@@ -13,7 +15,7 @@ namespace Mystic {
 
 		virtual void OnAttach() {};
 		virtual void OnDetach() {};
-		virtual void OnUpdate() {};
+		virtual void OnUpdate(Timestep ts) {};
 		virtual void OnImGuiRender() {};
 		virtual void OnEvent(Event& event) {};
 

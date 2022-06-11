@@ -6,6 +6,8 @@
 #include "Mystic/Layer.h"
 #include "Mystic/Log.h"
 
+#include "Mystic/Core/Timestep.h"
+
 #include "Mystic/Input.h"
 #include "Mystic/Keycodes.h"
 #include "Mystic/MouseButtonCodes.h"
@@ -14,6 +16,8 @@
 
 // -----Renderer--------------------------
 #include "Mystic/Renderer/Renderer.h"
+
+#include "Mystic/Renderer/OrthographicCamera.h"
 
 #include "Mystic/Renderer/Buffer.h"
 #include "Mystic/Renderer/VertexArray.h"

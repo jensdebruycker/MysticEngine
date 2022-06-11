@@ -9,7 +9,8 @@
 
 #include "Mystic/ImGui/ImGuiLayer.h"
 
-#include "Renderer/Shader.h"
+#include "Mystic/Core/Timestep.h"
+
 #include "Renderer/Buffer.h"
 
 namespace Mystic {
@@ -32,12 +33,14 @@ namespace Mystic {
 		static Application& Get();
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);
-
+	private:
 		std::unique_ptr<Window> _window;
 		ImGuiLayer* _imGuiLayer;
 		bool _running = true;
 		LayerStack _layerStack;
 
+		float _lastFrameTime = 0.0f;
+	private:
 		static Application* _instance;
 	};
 

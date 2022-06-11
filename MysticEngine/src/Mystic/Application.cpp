@@ -1,6 +1,8 @@
 #include "mspch.h"
 #include "Application.h"
 
+#include <GLFW/glfw3.h>
+
 namespace Mystic {
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
@@ -14,6 +16,7 @@ namespace Mystic {
 
 		_window = std::unique_ptr<Window>(Window::Create());
 		_window->SetEventCallback(BIND_EVENT_FN(OnEvent));
+		_window->SetVSync(false);
 
 		_imGuiLayer = new ImGuiLayer();
 		PushOverlay(_imGuiLayer);
@@ -52,8 +55,12 @@ namespace Mystic {
 	{
 		while (_running)
 		{
+			float time = (float)glfwGetTime(); //Platform::GetTime()
+			Timestep timestep = time - _lastFrameTime;
+			_lastFrameTime = time;
+
 			for (Layer* layer : _layerStack)
-				layer->OnUpdate();
+				layer->OnUpdate(timestep);
 
 			_imGuiLayer->Begin();
 			for (Layer* layer : _layerStack)

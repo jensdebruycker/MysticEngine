@@ -6,7 +6,8 @@ class ExampleLayer : public Mystic::Layer
 {
 public:
 
-	ExampleLayer() : Layer("Example")
+	ExampleLayer()
+		: Layer("Example"), _camera(-1.6f, 1.6f, -0.9f, 0.9f), _cameraPos(0.0f)
 	{
 		_vertexArray.reset(Mystic::VertexArray::Create());
 
@@ -39,6 +40,8 @@ public:
 			layout(location = 0) in vec3 a_Position;
 			layout(location = 1) in vec4 a_Color;
 
+			uniform mat4 u_ViewProjection;
+
 			out vec3 v_Position;
 			out vec4 v_Color;
 			
@@ -47,7 +50,7 @@ public:
 				v_Color = a_Color;
 
 				v_Position = a_Position;
-				gl_Position = vec4(a_Position, 1.0);
+				gl_Position = u_ViewProjection * vec4(a_Position, 1.0);
 			}
 		)";
 
@@ -69,46 +72,37 @@ public:
 		_shader.reset(Mystic::Shader::Create(vertexSource, fragmentSource));
 	}
 
-	void OnUpdate() override
+	void OnUpdate(Mystic::Timestep ts) override
 	{
+		if (Mystic::Input::IsKeyPressed(MS_KEY_A))
+			_cameraPos.x -= _cameraMoveSpeed * ts;
+		if (Mystic::Input::IsKeyPressed(MS_KEY_D))
+			_cameraPos.x += _cameraMoveSpeed * ts;
+		if (Mystic::Input::IsKeyPressed(MS_KEY_S))
+			_cameraPos.y -= _cameraMoveSpeed * ts;
+		if (Mystic::Input::IsKeyPressed(MS_KEY_W))
+			_cameraPos.y += _cameraMoveSpeed * ts;
+
+		if (Mystic::Input::IsKeyPressed(MS_KEY_Q))
+			_cameraRot -= _cameraRotationSpeed * ts;
+		if (Mystic::Input::IsKeyPressed(MS_KEY_E))
+			_cameraRot += _cameraRotationSpeed * ts;
+
 		Mystic::RenderCommand::SetClearColor({ 0.15f, 0.15f, 0.15f, 1.0 });
 		Mystic::RenderCommand::Clear();
 
-		Mystic::Renderer::BeginScene();
+		Mystic::Renderer::BeginScene(_camera);
 
-		_shader->Bind();
-		Mystic::Renderer::Submit(_vertexArray);
+		_camera.SetPosition(_cameraPos);
+		_camera.SetRotation(_cameraRot);
+
+		Mystic::Renderer::Submit(_shader, _vertexArray);
 		
 		Mystic::Renderer::EndScene();
 	}
 
-	void OnImGuiRender() override
-	{
-		static float f = 0.0f;
-		static int counter = 0;
-
-		ImGui::Begin("Hello, world!");
-
-		ImGui::Text("This is some useful text.");
-		ImGui::Checkbox("Demo Window", &show_demo_window);
-		if (show_demo_window)
-			ImGui::ShowDemoWindow(&show_demo_window);
-
-		ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
-		ImGui::ColorEdit3("clear color", (float*)&clear_color);
-
-		if (ImGui::Button("Button"))
-			counter++;
-		ImGui::SameLine();
-		ImGui::Text("counter = %d", counter);
-
-		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-		ImGui::End();
-	}
-
 	void OnEvent(Mystic::Event& event) override
 	{
-
 	}
 
 private:
@@ -119,6 +113,37 @@ private:
 	std::shared_ptr<Mystic::VertexArray> _vertexArray;
 	std::shared_ptr<Mystic::VertexBuffer> _vertexBuffer;
 	std::shared_ptr<Mystic::IndexBuffer> _indexBuffer;
+
+	Mystic::OrthographicCamera _camera;
+	glm::vec3 _cameraPos;
+	float _cameraMoveSpeed = 1.0f;
+
+	float _cameraRot = 0.0f;
+	float _cameraRotationSpeed = 1.0f;
+public:
+		void OnImGuiRender() override
+		{
+			static float f = 0.0f;
+			static int counter = 0;
+
+			ImGui::Begin("Hello, world!");
+
+			ImGui::Text("This is some useful text.");
+			ImGui::Checkbox("Demo Window", &show_demo_window);
+			if (show_demo_window)
+				ImGui::ShowDemoWindow(&show_demo_window);
+
+			ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
+			ImGui::ColorEdit3("clear color", (float*)&clear_color);
+
+			if (ImGui::Button("Button"))
+				counter++;
+			ImGui::SameLine();
+			ImGui::Text("counter = %d", counter);
+
+			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+			ImGui::End();
+		}
 };
 
 class Sandbox : public Mystic::Application
