@@ -2,32 +2,35 @@
 
 #include "imgui/imgui.h"
 
+#include <glm/gtc/matrix_transform.hpp>
+
 class ExampleLayer : public Mystic::Layer
 {
 public:
 
 	ExampleLayer()
-		: Layer("Example"), _camera(-1.6f, 1.6f, -0.9f, 0.9f), _cameraPos(0.0f)
+		: Layer("Example"), _camera(-1.6f, 1.6f, -0.9f, 0.9f), _cameraPos(0.0f), _trianglePosition(0.0f)
 	{
 		_vertexArray.reset(Mystic::VertexArray::Create());
 
-		float vertices[3*7] = {
-			-0.5f, -0.5f, 0.0f, 1.0, 0.0, 0.0, 1.0,
-			 0.5f, -0.5f, 0.0f, 0.0, 1.0, 0.0, 1.0,
-			 0.0f,  0.5f, 0.0f, 0.0, 0.0, 1.0, 1.0
+		float vertices[] = {
+			-0.5f, -0.5f, 0.0f,
+			 0.5f, -0.5f, 0.0f,
+			 0.5f,  0.5f, 0.0f,
+			-0.5f,  0.5f, 0.0f
 		};
 
 		_vertexBuffer.reset(Mystic::VertexBuffer::Create(vertices, sizeof(vertices)));
 
 		Mystic::BufferLayout layout = {
-			{ Mystic::ShaderDataType::Float3, "a_Position"},
-			{ Mystic::ShaderDataType::Float4, "a_Color"}
+			{ Mystic::ShaderDataType::Float3, "a_Position"}
 		};
 		_vertexBuffer->SetLayout(layout);
 		_vertexArray->AddVertexBuffer(_vertexBuffer);
 
 		unsigned int indices[] = {
-			0, 1, 2
+			0, 1, 2,
+			2, 3, 0
 		};
 
 		_indexBuffer.reset(Mystic::IndexBuffer::Create(indices, sizeof(indices)/sizeof(uint32_t)));
@@ -38,19 +41,16 @@ public:
 			#version 450
 			
 			layout(location = 0) in vec3 a_Position;
-			layout(location = 1) in vec4 a_Color;
 
 			uniform mat4 u_ViewProjection;
+			uniform mat4 u_Transform;
 
 			out vec3 v_Position;
-			out vec4 v_Color;
 			
 			void main()
 			{
-				v_Color = a_Color;
-
 				v_Position = a_Position;
-				gl_Position = u_ViewProjection * vec4(a_Position, 1.0);
+				gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
 			}
 		)";
 
@@ -60,12 +60,10 @@ public:
 			layout(location = 0) out vec4 color;
 
 			in vec3 v_Position;
-			in vec4 v_Color;
 			
 			void main()
 			{
-				color = vec4(v_Position * 0.5 + 0.5, 1.0);
-				color = v_Color;
+				color = vec4(0.2, 0.3, 0.8, 1.0);
 			}
 		)";
 
@@ -74,13 +72,13 @@ public:
 
 	void OnUpdate(Mystic::Timestep ts) override
 	{
-		if (Mystic::Input::IsKeyPressed(MS_KEY_A))
+		if (Mystic::Input::IsKeyPressed(MS_KEY_LEFT))
 			_cameraPos.x -= _cameraMoveSpeed * ts;
-		if (Mystic::Input::IsKeyPressed(MS_KEY_D))
+		if (Mystic::Input::IsKeyPressed(MS_KEY_RIGHT))
 			_cameraPos.x += _cameraMoveSpeed * ts;
-		if (Mystic::Input::IsKeyPressed(MS_KEY_S))
+		if (Mystic::Input::IsKeyPressed(MS_KEY_DOWN))
 			_cameraPos.y -= _cameraMoveSpeed * ts;
-		if (Mystic::Input::IsKeyPressed(MS_KEY_W))
+		if (Mystic::Input::IsKeyPressed(MS_KEY_UP))
 			_cameraPos.y += _cameraMoveSpeed * ts;
 
 		if (Mystic::Input::IsKeyPressed(MS_KEY_Q))
@@ -88,15 +86,35 @@ public:
 		if (Mystic::Input::IsKeyPressed(MS_KEY_E))
 			_cameraRot += _cameraRotationSpeed * ts;
 
+		if (Mystic::Input::IsKeyPressed(MS_KEY_A))
+			_trianglePosition.x -= _speed * ts;
+		if (Mystic::Input::IsKeyPressed(MS_KEY_D))
+			_trianglePosition.x += _speed * ts;
+		if (Mystic::Input::IsKeyPressed(MS_KEY_S))
+			_trianglePosition.y -= _speed * ts;
+		if (Mystic::Input::IsKeyPressed(MS_KEY_W))
+			_trianglePosition.y += _speed * ts;
+
 		Mystic::RenderCommand::SetClearColor({ 0.15f, 0.15f, 0.15f, 1.0 });
 		Mystic::RenderCommand::Clear();
-
-		Mystic::Renderer::BeginScene(_camera);
 
 		_camera.SetPosition(_cameraPos);
 		_camera.SetRotation(_cameraRot);
 
-		Mystic::Renderer::Submit(_shader, _vertexArray);
+		Mystic::Renderer::BeginScene(_camera);
+
+		static glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
+
+		for (int y = 0; y < 20; y++)
+		{
+			for (int x = 0; x < 20; x++)
+			{
+				glm::vec3 pos(x * 0.11f, y * 0.11f, 0.0f);
+				glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
+
+				Mystic::Renderer::Submit(_shader, _vertexArray, transform);
+			}
+		}
 		
 		Mystic::Renderer::EndScene();
 	}
@@ -116,10 +134,14 @@ private:
 
 	Mystic::OrthographicCamera _camera;
 	glm::vec3 _cameraPos;
-	float _cameraMoveSpeed = 1.0f;
+	float _cameraMoveSpeed = 2.0f;
 
 	float _cameraRot = 0.0f;
 	float _cameraRotationSpeed = 1.0f;
+
+	glm::vec3 _trianglePosition;
+	float _speed = 1.0f;
+
 public:
 		void OnImGuiRender() override
 		{
