@@ -22,6 +22,7 @@
 #include "Mystic/Renderer/Buffer.h"
 #include "Mystic/Renderer/VertexArray.h"
 #include "Mystic/Renderer/Shader.h"
+#include "Mystic/Renderer/Texture.h"
 // ----------------------------------------
 
 // -----EntryPoint-------------------------
