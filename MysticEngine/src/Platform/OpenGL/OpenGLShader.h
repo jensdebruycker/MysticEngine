@@ -10,6 +10,7 @@ namespace Mystic {
 	class OpenGLShader : public Shader
 	{
 	public:
+		OpenGLShader(const std::string& filepath);
 		OpenGLShader(const std::string& vertexSrc, const std::string& fragmentSrc);
 		virtual ~OpenGLShader();
 
@@ -22,7 +23,10 @@ namespace Mystic {
 		virtual void UploadFloat3(const std::string& name, const glm::vec3& value) override;
 		virtual void UploadFloat4(const std::string& name, const glm::vec4& value) override;
 		virtual void UploadMat4(const std::string& name, const glm::mat4& value) override;
-
+	private:
+		std::string ReadFile(const std::string& filepath);
+		std::unordered_map<GLenum, std::string> PreProcess(std::string& source);
+		void Compile(const std::unordered_map<GLenum, std::string>& shaderSources);
 	private:
 		uint32_t _rendererID;
 	};

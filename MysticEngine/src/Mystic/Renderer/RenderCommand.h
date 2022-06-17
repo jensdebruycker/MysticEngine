@@ -7,6 +7,11 @@ namespace Mystic {
 	class RenderCommand
 	{
 	public:
+		inline static void Init()
+		{
+			_rendererAPI->Init();
+		}
+
 		inline static void SetClearColor(const glm::vec4& color)
 		{
 			_rendererAPI->SetClearColor(color);

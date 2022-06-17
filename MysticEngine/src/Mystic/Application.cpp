@@ -3,6 +3,8 @@
 
 #include <GLFW/glfw3.h>
 
+#include "Renderer/Renderer.h"
+
 namespace Mystic {
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
@@ -17,6 +19,8 @@ namespace Mystic {
 		_window = std::unique_ptr<Window>(Window::Create());
 		_window->SetEventCallback(BIND_EVENT_FN(OnEvent));
 		_window->SetVSync(false);
+
+		Renderer::Init();
 
 		_imGuiLayer = new ImGuiLayer();
 		PushOverlay(_imGuiLayer);
