@@ -174,4 +174,20 @@ namespace Mystic {
 		return _data.VSync;
 	}
 
+	void WindowsWindow::SetCursorLock(bool enabled)
+	{
+		if (enabled)
+			glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		else
+			glfwSetInputMode(_window, GLFW_CURSOR, NULL);
+
+		_data.CursorLock = enabled;
+	}
+
+	bool WindowsWindow::IsCursorLock() const
+	{
+		return _data.CursorLock;
+	}
+
+
 }

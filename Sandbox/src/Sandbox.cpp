@@ -9,8 +9,10 @@ class ExampleLayer : public Mystic::Layer
 public:
 
 	ExampleLayer()
-		: Layer("Example"), _camera(-1.6f, 1.6f, -0.9f, 0.9f), _cameraPos(0.0f), _trianglePosition(0.0f)
+		: Layer("Example")
 	{
+		_camera.SetSmoothing(0.2f);
+
 		_vertexArray.reset(Mystic::VertexArray::Create());
 
 		float vertices[] = {
@@ -78,36 +80,27 @@ public:
 
 	void OnUpdate(Mystic::Timestep ts) override
 	{
-		if (Mystic::Input::IsKeyPressed(MS_KEY_LEFT))
-			_cameraPos.x -= _cameraMoveSpeed * ts;
-		if (Mystic::Input::IsKeyPressed(MS_KEY_RIGHT))
-			_cameraPos.x += _cameraMoveSpeed * ts;
-		if (Mystic::Input::IsKeyPressed(MS_KEY_DOWN))
-			_cameraPos.y -= _cameraMoveSpeed * ts;
-		if (Mystic::Input::IsKeyPressed(MS_KEY_UP))
-			_cameraPos.y += _cameraMoveSpeed * ts;
-
-		if (Mystic::Input::IsKeyPressed(MS_KEY_Q))
-			_cameraRot -= _cameraRotationSpeed * ts;
-		if (Mystic::Input::IsKeyPressed(MS_KEY_E))
-			_cameraRot += _cameraRotationSpeed * ts;
+		_camera.AddYawPitchRoll(glm::vec3(-Mystic::Input::GetMouseOffsetX() * 0.1, Mystic::Input::GetMouseOffsetY() * 0.1, 0.0f));
 
 		if (Mystic::Input::IsKeyPressed(MS_KEY_A))
-			_trianglePosition.x -= _speed * ts;
+			_camera.MoveLeft(ts);
 		if (Mystic::Input::IsKeyPressed(MS_KEY_D))
-			_trianglePosition.x += _speed * ts;
+			_camera.MoveRight(ts);
 		if (Mystic::Input::IsKeyPressed(MS_KEY_S))
-			_trianglePosition.y -= _speed * ts;
+			_camera.MoveBackward(ts);
 		if (Mystic::Input::IsKeyPressed(MS_KEY_W))
-			_trianglePosition.y += _speed * ts;
+			_camera.MoveForward(ts);
+		if (Mystic::Input::IsKeyPressed(MS_KEY_LEFT_CONTROL))
+			_camera.MoveDown(ts);
+		if (Mystic::Input::IsKeyPressed(MS_KEY_LEFT_SHIFT))
+			_camera.MoveUp(ts);
 
 		Mystic::RenderCommand::SetClearColor({ 0.15f, 0.15f, 0.15f, 1.0 });
 		Mystic::RenderCommand::Clear();
 
-		_camera.SetPosition(_cameraPos);
-		_camera.SetRotation(_cameraRot);
-
 		Mystic::Renderer::BeginScene(_camera);
+
+		_camera.Update(ts);
 
 		static glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
@@ -155,40 +148,16 @@ private:
 
 	Mystic::Ref<Mystic::Texture2D> _texture, _heartTexture;
 
-	Mystic::OrthographicCamera _camera;
-	glm::vec3 _cameraPos;
-	float _cameraMoveSpeed = 2.0f;
-
-	float _cameraRot = 0.0f;
-	float _cameraRotationSpeed = 30.0f;
-
-	glm::vec3 _trianglePosition;
-	float _speed = 1.0f;
+	Mystic::Camera _camera;
 
 public:
-		void OnImGuiRender() override
-		{
-			/*static float f = 0.0f;
-			static int counter = 0;*/
+	void OnImGuiRender() override
+	{
+		ImGui::Begin("Hello, world!");
 
-			ImGui::Begin("Hello, world!");
-
-			/*ImGui::Text("This is some useful text.");
-			ImGui::Checkbox("Demo Window", &show_demo_window);
-			if (show_demo_window)
-				ImGui::ShowDemoWindow(&show_demo_window);
-
-			ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
-			ImGui::ColorEdit3("clear color", (float*)&clear_color);
-
-			if (ImGui::Button("Button"))
-				counter++;
-			ImGui::SameLine();
-			ImGui::Text("counter = %d", counter);*/
-
-			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-			ImGui::End();
-		}
+		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+		ImGui::End();
+	}
 };
 
 class Sandbox : public Mystic::Application

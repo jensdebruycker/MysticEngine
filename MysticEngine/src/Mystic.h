@@ -17,7 +17,7 @@
 // -----Renderer--------------------------
 #include "Mystic/Renderer/Renderer.h"
 
-#include "Mystic/Renderer/OrthographicCamera.h"
+#include "Mystic/Renderer/Camera.h"
 
 #include "Mystic/Renderer/Buffer.h"
 #include "Mystic/Renderer/VertexArray.h"

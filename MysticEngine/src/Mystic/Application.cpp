@@ -19,6 +19,7 @@ namespace Mystic {
 		_window = std::unique_ptr<Window>(Window::Create());
 		_window->SetEventCallback(BIND_EVENT_FN(OnEvent));
 		_window->SetVSync(false);
+		_window->SetCursorLock(true);
 
 		Renderer::Init();
 

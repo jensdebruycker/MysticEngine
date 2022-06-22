@@ -10,7 +10,12 @@ namespace Mystic {
 		RenderCommand::Init();
 	}
 
-	void Renderer::BeginScene(OrthographicCamera& camera)
+	void Renderer::BeginScene(Camera2D& camera)
+	{
+		_sceneData->ViewProjectionMatrix = camera.GetViewProjectionMatrix();
+	}
+
+	void Renderer::BeginScene(Camera& camera)
 	{
 		_sceneData->ViewProjectionMatrix = camera.GetViewProjectionMatrix();
 	}

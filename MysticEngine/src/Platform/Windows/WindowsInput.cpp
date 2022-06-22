@@ -43,4 +43,18 @@ namespace Mystic {
 		return y;
 	}
 
+	float WindowsInput::GetMouseOffsetXImpl()
+	{
+		offsetX = prevX - GetMouseXImpl();
+		prevX = GetMouseXImpl();
+		return offsetX;
+	}
+
+	float WindowsInput::GetMouseOffsetYImpl()
+	{
+		offsetY = prevY - GetMouseYImpl();
+		prevY = GetMouseYImpl();
+		return offsetY;
+	}
+
 }

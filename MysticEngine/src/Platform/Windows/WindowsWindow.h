@@ -23,6 +23,9 @@ namespace Mystic {
 		void SetVSync(bool enabled) override;
 		bool IsVSync() const override;
 
+		void SetCursorLock(bool enabled) override;
+		bool IsCursorLock() const override;
+
 		inline virtual void* GetNativeWindow() const { return _window; }
 	private:
 		virtual void Init(const WindowProps& props);
@@ -36,6 +39,7 @@ namespace Mystic {
 			std::string Title;
 			unsigned int Width, Height;
 			bool VSync;
+			bool CursorLock;
 
 			EventCallbackFn EventCallback;
 		};

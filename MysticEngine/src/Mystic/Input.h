@@ -21,6 +21,9 @@ namespace Mystic{
 		inline static float GetMouseX() { return _instance->GetMouseXImpl(); }
 		inline static float GetMouseY() { return _instance->GetMouseYImpl(); }
 
+		inline static float GetMouseOffsetX() { return _instance->GetMouseOffsetXImpl(); }
+		inline static float GetMouseOffsetY() { return _instance->GetMouseOffsetYImpl(); }
+
 	protected:
 		virtual bool IsKeyPressedImpl(int keycode) = 0;
 
@@ -28,6 +31,9 @@ namespace Mystic{
 		virtual std::pair<float, float> GetMousePositionImpl() = 0;
 		virtual float GetMouseXImpl() = 0;
 		virtual float GetMouseYImpl() = 0;
+
+		virtual float GetMouseOffsetXImpl() = 0;
+		virtual float GetMouseOffsetYImpl() = 0;
 	private:
 		static Input* _instance;
 	};
