@@ -17,6 +17,7 @@ IncludeDir["Glad"] = "MysticEngine/vendor/Glad/include"
 IncludeDir["ImGui"] = "MysticEngine/vendor/imgui"
 IncludeDir["glm"] = "MysticEngine/vendor/glm"
 IncludeDir["stb_image"] = "MysticEngine/vendor/stb_image"
+IncludeDir["fast_obj"] = "MysticEngine/vendor/fast_obj"
 
 include "MysticEngine/vendor/GLFW"
 include "MysticEngine/vendor/Glad"
@@ -41,6 +42,7 @@ project "MysticEngine"
 		"%{prj.name}/src/**.cpp",
 		"%{prj.name}/vendor/stb_image/**.h",
 		"%{prj.name}/vendor/stb_image/**.cpp",
+		"%{prj.name}/vendor/fast_obj/**.h",
 		"%{prj.name}/vendor/glm/glm/**.hpp",
 		"%{prj.name}/vendor/glm/glm/**.inl"
 	}
@@ -53,7 +55,8 @@ project "MysticEngine"
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.ImGui}",
 		"%{IncludeDir.glm}",
-		"%{IncludeDir.stb_image}"
+		"%{IncludeDir.stb_image}",
+		"%{IncludeDir.fast_obj}"
 	}
 
 	links

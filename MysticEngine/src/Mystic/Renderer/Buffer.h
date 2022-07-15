@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Mystic/Assets/Vertex.h"
+
 namespace Mystic {
 
 	enum class ShaderDataType

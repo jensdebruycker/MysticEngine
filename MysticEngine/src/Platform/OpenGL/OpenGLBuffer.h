@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Mystic/Renderer/Buffer.h"
+#include "Mystic/Assets/Vertex.h"
 
 namespace Mystic {
 

@@ -25,6 +25,11 @@
 #include "Mystic/Renderer/Texture.h"
 // ----------------------------------------
 
+// -----Assets-----------------------------
+#include "Mystic/Assets/Mesh.h"
+#include "Mystic/Assets/Vertex.h"
+//-----------------------------------------
+
 // -----EntryPoint-------------------------
 #include "Mystic/EntryPoint.h"
 //-----------------------------------------

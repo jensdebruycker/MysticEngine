@@ -15,6 +15,7 @@ namespace Mystic {
 	{
 		glfwMakeContextCurrent(_windowHandle);
 		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+		glEnable(GL_DEPTH_TEST);
 		MS_CORE_ASSERT(status, "Failed to initialize Glad!");
 	}
 

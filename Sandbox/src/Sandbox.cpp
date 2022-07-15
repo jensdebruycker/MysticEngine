@@ -9,9 +9,9 @@ class ExampleLayer : public Mystic::Layer
 public:
 
 	ExampleLayer()
-		: Layer("Example")
+		: Layer("Example"), _mesh("assets/objects/monkey.obj")
 	{
-		_camera.SetSmoothing(0.2f);
+		_camera.SetSmoothing(0.8f);
 
 		_vertexArray.reset(Mystic::VertexArray::Create());
 
@@ -36,7 +36,7 @@ public:
 			2, 3, 0
 		};
 
-		_indexBuffer.reset(Mystic::IndexBuffer::Create(indices, sizeof(indices)/sizeof(uint32_t)));
+		_indexBuffer.reset(Mystic::IndexBuffer::Create(indices, sizeof(indices)));
 
 		_vertexArray->SetIndexBuffer(_indexBuffer);
 
@@ -129,6 +129,8 @@ public:
 
 		_heartTexture->Bind();
 		Mystic::Renderer::Submit(_texShader, _vertexArray, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+
+		_mesh.Draw(_flatColorShader);
 		
 		Mystic::Renderer::EndScene();
 	}
@@ -150,6 +152,7 @@ private:
 
 	Mystic::Camera _camera;
 
+	Mystic::Mesh _mesh;
 public:
 	void OnImGuiRender() override
 	{
