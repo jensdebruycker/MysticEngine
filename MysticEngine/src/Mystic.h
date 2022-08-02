@@ -17,8 +17,6 @@
 // -----Renderer--------------------------
 #include "Mystic/Renderer/Renderer.h"
 
-#include "Mystic/Renderer/Camera.h"
-
 #include "Mystic/Renderer/Buffer.h"
 #include "Mystic/Renderer/VertexArray.h"
 #include "Mystic/Renderer/Shader.h"
@@ -26,8 +24,11 @@
 // ----------------------------------------
 
 // -----Assets-----------------------------
-#include "Mystic/Assets/Mesh.h"
+#include "Mystic/Assets/Camera.h"
 #include "Mystic/Assets/Vertex.h"
+#include "Mystic/Assets/Mesh.h"
+#include "Mystic/Assets/Material.h"
+#include "Mystic/Assets/Model.h"
 //-----------------------------------------
 
 // -----EntryPoint-------------------------

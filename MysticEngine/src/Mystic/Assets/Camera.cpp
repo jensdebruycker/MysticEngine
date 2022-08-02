@@ -34,6 +34,9 @@ namespace Mystic {
 		_right = glm::normalize(glm::cross(_front, _worldUp));
 		_up = glm::normalize(glm::cross(_right, _front));
 
+		_moveFront = _front;
+		_moveRight = _right;
+
 		_viewMatrix = glm::lookAt(_currentPosition, _target, _up);
 		_projectionMatrix = glm::perspective(_fov, _aspect, _near, _far);
 		_viewProjectionMatrix = _projectionMatrix * _viewMatrix;
@@ -69,13 +72,24 @@ namespace Mystic {
 		front.z = sin(glm::radians(_currentYaw - 90.0f)) * cos(glm::radians(_currentPitch));
 
 		_front = glm::normalize(front);
+		_moveFront.x = _front.x;
+		_moveFront.z = _front.z;
+		_moveFront = glm::normalize(_moveFront);
 
 		//Calculate Right and Up Vectors
 		//normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
 		_right = glm::normalize(glm::cross(_front, _worldUp));  
 		_up = glm::normalize(glm::cross(_right, _front));
 
-		_target = _currentPosition + _front;
+		_moveRight.x = _right.x;
+		_moveRight.z = _right.z;
+		_moveRight = glm::normalize(_moveRight);
+
+		if (!_setTarget)
+		{
+			_target = _currentPosition + _front;
+		}
+		_setTarget = false;
 
 		_viewMatrix = glm::lookAt(_currentPosition, _target, _up);
 		_projectionMatrix = glm::perspective(_fov, _aspect, _near, _far);
@@ -85,6 +99,11 @@ namespace Mystic {
 	void Camera::SetPosition(const glm::vec3& position)
 	{
 		_desiredPosition = position;
+	}
+
+	glm::vec3 Camera::GetPosition()
+	{
+		return _currentPosition;
 	}
 
 	void Camera::SetYawPitchRoll(const glm::vec3& yawPitchRoll)
@@ -111,36 +130,37 @@ namespace Mystic {
 	void Camera::SetTarget(const glm::vec3& target)
 	{
 		_target = target;
+		_setTarget = true;
 	}
 
 	void Camera::MoveForward(float speed)
 	{
-		_desiredPosition += _front * speed;
+		_desiredPosition += _moveFront * speed;
 	}
 
 	void Camera::MoveBackward(float speed)
 	{
-		_desiredPosition -= _front * speed;
+		_desiredPosition -= _moveFront * speed;
 	}
 
 	void Camera::MoveUp(float speed)
 	{
-		_desiredPosition += _up * speed;
+		_desiredPosition += _worldUp * speed;
 	}
 
 	void Camera::MoveDown(float speed)
 	{
-		_desiredPosition -= _up * speed;
+		_desiredPosition -= _worldUp * speed;
 	}
 
 	void Camera::MoveRight(float speed)
 	{
-		_desiredPosition += _right * speed;
+		_desiredPosition += _moveRight * speed;
 	}
 
 	void Camera::MoveLeft(float speed)
 	{
-		_desiredPosition -= _right * speed;
+		_desiredPosition -= _moveRight * speed;
 	}
 
 	void Camera::SetSmoothing(float amount)

@@ -16,16 +16,21 @@ namespace Mystic {
 	public:
 		Mesh(const std::string& filepath);
 
-		void Draw(Ref<Shader> shader);
+		void Draw(Ref<Shader> shader, glm::mat4 modelMatrix);
 	private:
 		std::vector<float> vertices;
 		std::vector<unsigned int> indices;
+
+		std::vector<glm::vec3> positions;
+		std::vector<glm::vec3> normals;
+		std::vector<glm::vec2> texCoords;
 
 		Ref<VertexArray> va;
 		Ref<VertexBuffer> vb;
 		Ref<IndexBuffer> ib;
 	private:
 		void loadMesh(const std::string& filepath);
+		void push_vertex_data(int i, int n, int t);
 	};
 
 }

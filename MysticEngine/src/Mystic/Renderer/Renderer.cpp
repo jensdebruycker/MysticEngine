@@ -24,11 +24,11 @@ namespace Mystic {
 	{
 	}
 
-	void Renderer::Submit(const Ref<Shader> shader, const Ref<VertexArray>& vertexArray, const glm::mat4& transform)
+	void Renderer::Submit(const Ref<Shader> shader, const Ref<VertexArray>& vertexArray, const glm::mat4& modelMatrix)
 	{
 		shader->Bind();
 		shader->UploadMat4("u_ViewProjection", _sceneData->ViewProjectionMatrix);
-		shader->UploadMat4("u_Transform", transform);
+		shader->UploadMat4("u_Model", modelMatrix);
 
 		vertexArray->Bind();
 		RenderCommand::DrawIndexed(vertexArray);

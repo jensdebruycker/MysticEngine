@@ -10,14 +10,12 @@ uniform mat4 u_Model;
 
 out vec3 FragPos;
 out vec3 Normal;
-out vec2 TexCoord;
 
 void main()
 {
 	gl_Position = u_ViewProjection * u_Model * vec4(a_Position, 1.0);
 	FragPos = vec3(u_Model * vec4(a_Position, 1.0));
 	Normal = mat3(transpose(inverse(u_Model))) * a_Normal;
-	TexCoord = a_TexCoord;
 }
 
 #type fragment
@@ -25,6 +23,7 @@ void main()
 
 layout(location = 0) out vec4 color;
 
+uniform vec3 u_Color;
 uniform vec3 u_LightColor;
 uniform float u_Shininess;
 
@@ -33,11 +32,8 @@ uniform vec3 u_CameraPos;
 
 uniform float u_Gamma;
 
-uniform sampler2D u_Texture;
-
 in vec3 FragPos;
 in vec3 Normal;
-in vec2 TexCoord;
 			
 void main()
 {
@@ -57,6 +53,10 @@ void main()
 	float spec = pow(max(dot(norm, halfwayDir), 0.0), u_Shininess);
 	vec3 specular = specularStrength * spec * u_LightColor;
 
-	vec4 result = vec4((ambient + diffuse + specular), 1.0) * texture(u_Texture, TexCoord);
-	color = result;
+	vec3 result = (ambient + diffuse + specular) * u_Color;
+
+	float gamma = 1.0;
+    result = pow(result, vec3(1.0/u_Gamma));
+
+	color = vec4(result, 1.0);
 }

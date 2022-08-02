@@ -4,6 +4,8 @@
 #include <GLFW/glfw3.h>
 
 #include "Renderer/Renderer.h"
+#include "Input.h"
+#include "Keycodes.h"
 
 namespace Mystic {
 
@@ -19,7 +21,7 @@ namespace Mystic {
 		_window = std::unique_ptr<Window>(Window::Create());
 		_window->SetEventCallback(BIND_EVENT_FN(OnEvent));
 		_window->SetVSync(false);
-		_window->SetCursorLock(true);
+		_window->SetCursorLock(false);
 
 		Renderer::Init();
 

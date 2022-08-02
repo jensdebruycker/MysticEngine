@@ -179,7 +179,7 @@ namespace Mystic {
 		if (enabled)
 			glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 		else
-			glfwSetInputMode(_window, GLFW_CURSOR, NULL);
+			glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 
 		_data.CursorLock = enabled;
 	}

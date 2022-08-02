@@ -38,6 +38,7 @@ namespace Mystic {
 
 		//Position of camera
 		void SetPosition(const glm::vec3& position);
+		glm::vec3 GetPosition();
 
 		//Set Rotations
 		void SetYawPitchRoll(const glm::vec3& yawPitchRoll);
@@ -73,6 +74,9 @@ namespace Mystic {
 		glm::vec3 _up;
 		glm::vec3 _right;
 
+		glm::vec3 _moveFront;
+		glm::vec3 _moveRight;
+
 		glm::vec3 _worldUp = { 0.0f, 1.0f, 0.0f };
 
 		//Rotation in radians
@@ -81,6 +85,7 @@ namespace Mystic {
 		float _roll = 0.0f;
 
 		glm::vec3 _target = { 0.0f, 0.0f, 0.0f };
+		bool _setTarget = false;
 
 		glm::vec3 _currentPosition = { 0.0f, 0.0f, 1.0f };
 

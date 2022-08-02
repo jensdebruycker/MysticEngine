@@ -127,7 +127,7 @@ namespace Mystic {
 
 		virtual unsigned int GetCount() const = 0;
 
-		static IndexBuffer* Create(unsigned int* indices, unsigned int size);
+		static IndexBuffer* Create(unsigned int* indices, unsigned int count);
 	};
 
 }

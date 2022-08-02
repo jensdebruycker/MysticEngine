@@ -15,7 +15,7 @@ public:
 
 		_vertexArray.reset(Mystic::VertexArray::Create());
 
-		float vertices[] = {
+		/*float vertices[] = {
 			-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
 			 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
 			 0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
@@ -38,7 +38,7 @@ public:
 
 		_indexBuffer.reset(Mystic::IndexBuffer::Create(indices, sizeof(indices)));
 
-		_vertexArray->SetIndexBuffer(_indexBuffer);
+		_vertexArray->SetIndexBuffer(_indexBuffer);*/
 
 		std::string flatColorVertexSrc = R"(
 			#version 450
@@ -68,19 +68,32 @@ public:
 		)";
 
 		_flatColorShader.reset(Mystic::Shader::Create(flatColorVertexSrc, flatColorFragmentSrc));
+		_lightShader.reset(Mystic::Shader::Create("assets/shaders/light.glsl"));
+
+		_model.mesh = Mystic::Mesh("assets/objects/torus.obj");
+		_model.material = _material;
+
+		_plane.mesh = Mystic::Mesh("assets/objects/plane.obj");
+		_plane.material = _material;
 
 		_texShader.reset(Mystic::Shader::Create("assets/shaders/texture.glsl"));
+		_texture = Mystic::Texture2D::Create("assets/textures/wood.png");
+		_texShader->Bind();
+		_texShader->UploadInt("u_Texture", 0);
+
+		/*_texShader.reset(Mystic::Shader::Create("assets/shaders/texture.glsl"));
 
 		_texture = Mystic::Texture2D::Create("assets/textures/checkerboard.png");
 		_heartTexture = Mystic::Texture2D::Create("assets/textures/heart.png");
 
 		_texShader->Bind();
-		_texShader->UploadInt("u_Texture", 0);
+		_texShader->UploadInt("u_Texture", 0);*/
 	}
 
 	void OnUpdate(Mystic::Timestep ts) override
 	{
-		_camera.AddYawPitchRoll(glm::vec3(-Mystic::Input::GetMouseOffsetX() * 0.1, Mystic::Input::GetMouseOffsetY() * 0.1, 0.0f));
+		//_camera.AddYawPitchRoll(glm::vec3(-Mystic::Input::GetMouseOffsetX() * 0.1, Mystic::Input::GetMouseOffsetY() * 0.1, 0.0f));
+		_camera.SetTarget(glm::vec3(0.0f, 0.0f, 0.0f));
 
 		if (Mystic::Input::IsKeyPressed(MS_KEY_A))
 			_camera.MoveLeft(ts);
@@ -95,7 +108,7 @@ public:
 		if (Mystic::Input::IsKeyPressed(MS_KEY_LEFT_SHIFT))
 			_camera.MoveUp(ts);
 
-		Mystic::RenderCommand::SetClearColor({ 0.15f, 0.15f, 0.15f, 1.0 });
+		Mystic::RenderCommand::SetClearColor({ 1.0f, 0.0f, 1.0f, 1.0 });
 		Mystic::RenderCommand::Clear();
 
 		Mystic::Renderer::BeginScene(_camera);
@@ -106,8 +119,12 @@ public:
 
 		glm::vec4 redColor(0.8f, 0.2f, 0.3f, 1.0f);
 		glm::vec4 blueColor(0.2f, 0.3f, 0.8f, 1.0f);
+		glm::vec4 whiteColor(0.84f, 0.85f, 0.8f, 1.0f);
 
-		_flatColorShader->Bind();
+		glm::vec3 brownColor(0.72f, 0.25f, 0.15f);
+		glm::vec3 lightPos(2.0f, 10.0f, 5.0f);
+
+		/*_flatColorShader->Bind();
 		for (int y = 0; y < 20; y++)
 		{
 			for (int x = 0; x < 20; x++)
@@ -128,22 +145,42 @@ public:
 		Mystic::Renderer::Submit(_texShader, _vertexArray, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 
 		_heartTexture->Bind();
-		Mystic::Renderer::Submit(_texShader, _vertexArray, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+		Mystic::Renderer::Submit(_texShader, _vertexArray, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));*/
 
-		_mesh.Draw(_flatColorShader);
+		/*_lightShader->Bind();
+		_lightShader->UploadFloat4("u_Color", brownColor);
+		_lightShader->UploadFloat3("u_LightPos", lightPos);
+		_lightShader->UploadFloat3("u_LightColor", glm::vec3(1.0f, 1.0f, 1.0f));
+		_lightShader->UploadFloat3("u_CameraPos", _camera.GetPosition());
+		_mesh.Draw(_lightShader, glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f)));
+
+		_flatColorShader->Bind();
+		_flatColorShader->UploadFloat4("u_Color", whiteColor);
+		_mesh.Draw(_flatColorShader, glm::translate(glm::mat4(1.0f), glm::vec3(3.0f, 0.0f, 0.0f)));*/
+
+		_texture->Bind();
+		
+
+		_lightShader->UploadFloat3("u_LightPos", lightPos);
+		_lightShader->UploadFloat3("u_CameraPos", _camera.GetPosition());
+		_lightShader->UploadFloat("u_Gamma", _gamma);
+		_material.color = brownColor;
+		_model.material = _material;
+		_model.Draw(_lightShader);
 		
 		Mystic::Renderer::EndScene();
 	}
 
 	void OnEvent(Mystic::Event& event) override
 	{
+		
 	}
 
 private:
 	bool show_demo_window = false;
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 private:
-	Mystic::Ref<Mystic::Shader> _flatColorShader, _texShader;
+	Mystic::Ref<Mystic::Shader> _flatColorShader, _texShader, _lightShader;
 	Mystic::Ref<Mystic::VertexArray> _vertexArray;
 	Mystic::Ref<Mystic::VertexBuffer> _vertexBuffer;
 	Mystic::Ref<Mystic::IndexBuffer> _indexBuffer;
@@ -153,12 +190,17 @@ private:
 	Mystic::Camera _camera;
 
 	Mystic::Mesh _mesh;
+	Mystic::Material _material;
+	Mystic::Model _model;
+	Mystic::Model _plane;
+
+	float _gamma = 0.9f;
 public:
 	void OnImGuiRender() override
 	{
 		ImGui::Begin("Hello, world!");
-
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+		ImGui::SliderFloat("Gamma", &_gamma, 0.01f, 2.0f);
 		ImGui::End();
 	}
 };
